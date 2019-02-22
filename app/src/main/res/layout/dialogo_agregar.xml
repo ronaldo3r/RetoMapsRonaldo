@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:background="@android:color/black"
+    android:gravity="center"
+
+    >
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:id="@+id/txt_dialog"
+        android:text="Agregar Marcador"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@android:color/white"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:id="@+id/edit_name"
+        android:layout_below="@+id/txt_dialog"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:hint="Nombre del marcador"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+
+        />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:id="@+id/btn_cancel"
+        android:layout_below="@+id/edit_name"
+        android:layout_marginTop="15dp"
+        android:text="Cancelar"
+        android:background="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginRight="15dp"
+       />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:id="@+id/btn_add"
+        android:layout_below="@+id/edit_name"
+        android:layout_toRightOf="@+id/btn_cancel"
+        android:layout_marginTop="15dp"
+        android:text="Agregar"
+        android:textStyle="bold"
+        android:background="@android:color/white"/>
+
+
+</RelativeLayout>
