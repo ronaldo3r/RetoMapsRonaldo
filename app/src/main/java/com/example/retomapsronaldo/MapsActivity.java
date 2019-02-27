@@ -3,12 +3,9 @@ package com.example.retomapsronaldo;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -17,11 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,13 +31,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mapa;
     private LocationManager manager;
     private ArrayList<Marker> marcadores;
+
+    //Diálogo
+    private Dialog dialog_agregar;
+    private TextView txt_dialog;
+    private EditText edit_nombre;
+    private Button btn_cancelar;
+    private Button btn_agregar;
+
+
+    private LatLng latLongitud;
+
+    //Más cercano
     private Marker inicio;
-    public Dialog dialog_agregar;
-    public TextView txt_dialog;
-    public EditText edit_nombre;
-    public Button btn_cancelar;
-    public Button btn_agregar;
-    public LatLng latLongitud;
+    private Marker masCercano;
+    private TextView lugarCercano;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+        marcadores = new ArrayList<Marker>();
+
+        //Dialogo
         dialog_agregar= new Dialog(this);
+        dialog_agregar.setContentView(R.layout.dialogo_agregar);
+        txt_dialog = dialog_agregar.findViewById(R.id.txt_dialog);
+        edit_nombre = dialog_agregar.findViewById(R.id.edit_name);
+        btn_cancelar = dialog_agregar.findViewById(R.id.btn_cancel);
+        btn_agregar = dialog_agregar.findViewById(R.id.btn_add);
+
+        //Mas cercano
+        lugarCercano = findViewById(R.id.masCercano);
     }
 
 
@@ -96,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(new LatLng(location.getLatitude(), location.getLongitude()))
                         .title("Mi posición actual")
                 );
+                //inicio.setIcon();
                 mapa.moveCamera(CameraUpdateFactory
                         .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10));
             }
@@ -120,20 +137,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+
                 latLongitud=latLng;
                 agregarMarcador();
+                masCercano=calcularMasCercano();
+                lugarCercano.setText("El lugar más cercano es: "+masCercano.getTitle());
+
+            }
+        });
+
+        mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return false;
             }
         });
 
     }
 
     public void agregarMarcador(){
-
-        dialog_agregar.setContentView(R.layout.dialogo_agregar);
-        txt_dialog = findViewById(R.id.txt_dialog);
-        edit_nombre = findViewById(R.id.edit_name);
-        btn_cancelar = findViewById(R.id.btn_cancel);
-        btn_agregar = findViewById(R.id.btn_add);
 
         btn_cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,8 +175,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
-        dialog_agregar.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_agregar.show();
+    }
+
+    public Marker calcularMasCercano(){
+
+        Marker marMenor = null;
+        double disMenor=0;
+        Location miPos= new Location("Mi posición");
+        miPos.setLatitude(inicio.getPosition().latitude);
+        miPos.setLongitude(inicio.getPosition().longitude);
+
+
+        for(int i=0; i<marcadores.size();i++){
+
+            Marker temporal=marcadores.get(i);
+
+            Location pos= new Location("Otra posición");
+            pos.setLatitude(temporal.getPosition().latitude);
+            pos.setLongitude(temporal.getPosition().longitude);
+
+            double disTemporal=miPos.distanceTo(pos);
+
+            if(i==0) {
+                disMenor = miPos.distanceTo(pos);
+                marMenor=temporal;
+            }
+
+            if(disMenor>disTemporal){
+                disMenor=disTemporal;
+                marMenor=temporal;
+            }
+
+        }
+
+        return marMenor;
     }
 }
