@@ -9,14 +9,15 @@
     tools:context=".MapsActivity" >
 
     <TextView
-
-        android:id="@+id/masCercano"
-        android:width="200dp"
-        android:height="50dp"
-        
-
-        >
-
-    </TextView>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_cercano"
+        android:text="No hay ningun lugar registrado"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"/>
 
 </fragment>

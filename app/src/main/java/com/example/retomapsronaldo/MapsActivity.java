@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btn_agregar = dialog_agregar.findViewById(R.id.btn_add);
 
         //Mas cercano
-        lugarCercano = findViewById(R.id.masCercano);
+        lugarCercano = findViewById(R.id.txt_cercano);
     }
 
 
@@ -140,8 +140,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 latLongitud=latLng;
                 agregarMarcador();
-                masCercano=calcularMasCercano();
-                lugarCercano.setText("El lugar más cercano es: "+masCercano.getTitle());
+//                masCercano=calcularMasCercano();
+//                lugarCercano.setText("El lugar más cercano es: "+masCercano.getTitle());
 
             }
         });
@@ -171,6 +171,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(latLongitud)
                         .title(edit_nombre.getText().toString()));
                 marcadores.add(actual);
+                masCercano=calcularMasCercano();
+                lugarCercano.setText("El lugar más cercano es: "+masCercano.getTitle());
+                edit_nombre.setText("");
                 dialog_agregar.dismiss();
             }
         });
