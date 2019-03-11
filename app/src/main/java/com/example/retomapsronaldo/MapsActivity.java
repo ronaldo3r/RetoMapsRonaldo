@@ -47,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private LatLng latLongitud;
+    private boolean first;
 
     //Más cercano
     private Marker inicio;
@@ -99,21 +100,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Manifest.permission.ACCESS_COARSE_LOCATION
         }, REQUEST_CODE);
 
+        first=false;
         //Agregar el listener de ubicacion
         manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.e(">>>", "LAT: " + location.getLatitude() + " , LONG: " + location.getLongitude());
 
-                if (inicio != null) {
+                if (first==false) {
+                    inicio = mapa.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .title("Mi posición actual").icon(BitmapDescriptorFactory.fromResource(R.drawable.iconperson))
+                    );
+                    mapa.moveCamera(CameraUpdateFactory
+                            .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    first=true;
+                }else{
+
                     inicio.remove();
+                    inicio = mapa.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .title("Mi posición actual").icon(BitmapDescriptorFactory.fromResource(R.drawable.iconperson))
+                    );
+                    mapa.moveCamera(CameraUpdateFactory
+                            .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+
+                    Toast.makeText(getApplicationContext(), "Ubicación actual actualizada", Toast.LENGTH_LONG).show();
+
                 }
-                inicio = mapa.addMarker(new MarkerOptions()
-                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .title("Mi posición actual").icon(BitmapDescriptorFactory.fromResource(R.drawable.iconperson))
-                );
-                mapa.moveCamera(CameraUpdateFactory
-                        .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 
 
                 if (!marcadores.isEmpty()) {

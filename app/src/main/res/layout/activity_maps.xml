@@ -16,8 +16,9 @@
         android:textSize="28dp"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_gravity="bottom"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/background_dark"
+        android:alpha="0.6"/>
 
 </fragment>
