@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -109,9 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 inicio = mapa.addMarker(new MarkerOptions()
                         .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .title("Mi posición actual")
+                        .title("Mi posición actual").icon(BitmapDescriptorFactory.fromResource(R.drawable.iconperson))
                 );
-                //inicio.setIcon();
                 mapa.moveCamera(CameraUpdateFactory
                         .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 
@@ -199,7 +199,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if ((edit_nombre.getText().toString() != null) && !(edit_nombre.getText().toString().equals(""))&&!(edit_nombre.getText().toString().trim().equals(""))) {
                     Marker actual = mapa.addMarker(new MarkerOptions()
                             .position(latLongitud)
-                            .title(edit_nombre.getText().toString()));
+                            .title(edit_nombre.getText().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
                     marcadores.add(actual);
                     String mens = estaCerca();
                     lugarCercano.setText(mens);
