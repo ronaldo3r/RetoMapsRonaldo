@@ -292,11 +292,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (distancia <= 500) {
 
             mensaje = "Para llegar a " + masCercano.getTitle() + " faltan " + distancia + " metros";
-        } else {
+        }
+        else if(distancia<=100){
+            mensaje="Usted se encuentra en "+masCercano.getTitle();
+        }
+        else {
 
             mensaje = "El lugar más cercano es:" + masCercano.getTitle();
         }
-
 
         return mensaje;
 
