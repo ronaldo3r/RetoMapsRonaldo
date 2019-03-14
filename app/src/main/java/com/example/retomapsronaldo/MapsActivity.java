@@ -289,7 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         int distancia = calcularDistanciaMarcadores(masCercano);
 
-        if (distancia <= 500) {
+        if (distancia>100 && distancia <= 500) {
 
             mensaje = "Para llegar a " + masCercano.getTitle() + " faltan " + distancia + " metros";
         }
@@ -298,7 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else {
 
-            mensaje = "El lugar más cercano es:" + masCercano.getTitle();
+            mensaje = "El lugar más cercano es: " + masCercano.getTitle();
         }
 
         return mensaje;
